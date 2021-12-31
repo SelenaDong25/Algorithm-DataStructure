@@ -1,0 +1,80 @@
+public void mergeSort() {
+        Node p = first;
+
+        String[] strArr = new String[this.size()]; 
+        int i = 0;
+        while (p != null) {
+            strArr[i] = p.value;
+            i++;
+            p = p.next;
+        }
+
+        MergeSortList(strArr, 0, this.size() - 1);
+        p = first;
+        for (i = 0; i < this.size(); i++) {
+            p.value = strArr[i];
+            p = p.next;
+        }
+
+    }
+
+
+
+public void Merge(String[] arr, int i, int j, int k) {
+        int mergedSize = k - i + 1;                     // Size of merged partition
+        int mergePos = 0;                               // Position to insert merged list
+        int leftPos = 0;                                // Position of elements in left partition
+        int rightPos = 0;                               // Position of elements in right partition
+        String[] mergedList = new String[mergedSize];   // Dynamically allocates temporary array
+                                                        // for merged list
+        
+        leftPos = i;                                // Initialize left partition position
+        rightPos = j + 1;                           // Initialize right partition position
+        
+        // Add smallest element from left or right partition to merged list
+        while (leftPos <= j && rightPos <= k) {
+           if (arr[leftPos].compareTo(arr[rightPos]) < 0 ) {
+              mergedList[mergePos] = arr[leftPos];
+              leftPos++;
+           }
+           else {
+              mergedList[mergePos] = arr[rightPos];
+              rightPos++;
+           }
+           mergePos++;
+        }
+        
+        // If left partition is not empty, add remaining elements to merged list
+        while (leftPos <= j) {
+           mergedList[mergePos] = arr[leftPos];
+           leftPos++;
+           mergePos++;
+        }
+        
+        // If right partition is not empty, add remaining elements to merged list
+        while (rightPos <= k) {
+           mergedList[mergePos] = arr[rightPos];
+           rightPos++;
+           mergePos++;
+        }
+        
+        // Copy merge list back to array
+        for (mergePos = 0; mergePos < mergedSize; ++mergePos) {
+           arr[i + mergePos] = mergedList[mergePos];
+        }
+     }
+     
+    public void MergeSortList(String[] arr, int i, int k) {
+        int j = 0;
+        
+        if (i < k) {
+           j = (i + k) / 2;  // Find the midpoint in the partition
+           
+           // Recursively sort left and right partitions
+           MergeSortList(arr, i, j);
+           MergeSortList(arr, j + 1, k);
+           
+           // Merge left and right partition in sorted order
+           Merge(arr, i, j, k);
+        }
+     }
